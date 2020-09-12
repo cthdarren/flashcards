@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "noImplicitAny": false,
+      "noEmitOnError": true,
+      "removeComments": false,
+      "sourceMap": false,
+      "target": "es6",
+      "outDir": "./tsOutputDir",
+      "rootDir": "./",
+      "jsx": "react",
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true
+    },
+    "exclude": [
+      "node_modules",
+      "wwwroot"
+    ]
+  }
