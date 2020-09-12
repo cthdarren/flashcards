@@ -10,6 +10,7 @@ module.exports = {
     },
     entry: {
         Index: "./wwwroot/Scripts/Home/react/index.tsx",
+        FlashCard: "./wwwroot/Scripts/Home/react/Flashcards.tsx",
     },
     output: {
         path: path.resolve(__dirname, "./wwwroot/Scripts/dist/Home/react"),

@@ -38,5 +38,38 @@ namespace FlashCards.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        //TODO CHANGE THIS TO ADDING A FLASHCARD TAKES IN A LIST AND OTHER PROPERTIES
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFlashCard([Bind("ID,Title,ReleaseDate,Genre,Price")] FlashCardGroup movie)
+        {
+            if (id != movie.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Add(movie);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MovieExists(movie.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return View(movie);
+        }
     }
 }
