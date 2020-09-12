@@ -10,6 +10,7 @@ namespace FlashCards.Models
     {
         [Key]
         public int FlashCardID { get; set; }
+        public string Description {get; set; }
         public int CardGroupID { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
