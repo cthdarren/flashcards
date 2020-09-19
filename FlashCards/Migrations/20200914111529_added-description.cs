@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace FlashCards.Data.Migrations
+namespace FlashCards.Migrations
 {
-    public partial class adde_description_column_flashcards : Migration
+    public partial class addeddescription : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "Description",
-                table: "FlashCards",
+                table: "FlashCardSets",
                 nullable: true);
         }
 
@@ -16,7 +16,7 @@ namespace FlashCards.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Description",
-                table: "FlashCards");
+                table: "FlashCardSets");
         }
     }
 }

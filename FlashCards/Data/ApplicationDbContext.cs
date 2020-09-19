@@ -16,13 +16,13 @@ namespace FlashCards.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<FlashCardGroup>()
+            modelBuilder.Entity<FlashCardSet>()
                 .HasMany(fcg => fcg.FlashCards)
-                .WithOne(fc => fc.FlashCardGroup);
+                .WithOne(fc => fc.FlashCardSet);
         }
 
         public DbSet<FlashCard> FlashCards { get; set; }
-        public DbSet<FlashCardGroup> FlashCardGroups { get; set; }
+        public DbSet<FlashCardSet> FlashCardSets { get; set; }
     }
 
 }

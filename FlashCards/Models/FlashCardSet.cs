@@ -5,18 +5,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+
 namespace FlashCards.Models
 {
-    public class FlashCardGroup
+    public class FlashCardSet
     {
         [Key]
-        public int CardGroupID { get; set; }
+        public Guid CardGroupID { get; set; }
         public string Name { get; set; }
+        public string Description {get;set;}
         public ICollection<FlashCard> FlashCards { get; set; }
         public string UserId {get;set;}
         
 
-        public string ApplicationUserId {get;set;}
         [ForeignKey("UserId")]
         public IdentityUser User {get;set;}
     }

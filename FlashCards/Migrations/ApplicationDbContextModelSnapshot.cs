@@ -4,16 +4,14 @@ using FlashCards.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FlashCards.Data.Migrations
+namespace FlashCards.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200912161201_adde_description_column_flashcards")]
-    partial class adde_description_column_flashcards
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,41 +21,36 @@ namespace FlashCards.Data.Migrations
 
             modelBuilder.Entity("FlashCards.Models.FlashCard", b =>
                 {
-                    b.Property<int>("FlashCardID")
+                    b.Property<Guid>("FlashCardID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Answer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CardGroupID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CardSetID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("FlashCardGroupCardGroupID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Question")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FlashCardID");
 
-                    b.HasIndex("FlashCardGroupCardGroupID");
+                    b.HasIndex("CardSetID");
 
                     b.ToTable("FlashCards");
                 });
 
-            modelBuilder.Entity("FlashCards.Models.FlashCardGroup", b =>
+            modelBuilder.Entity("FlashCards.Models.FlashCardSet", b =>
                 {
-                    b.Property<int>("CardGroupID")
+                    b.Property<Guid>("CardGroupID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -70,7 +63,7 @@ namespace FlashCards.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FlashCardGroups");
+                    b.ToTable("FlashCardSets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -275,12 +268,14 @@ namespace FlashCards.Data.Migrations
 
             modelBuilder.Entity("FlashCards.Models.FlashCard", b =>
                 {
-                    b.HasOne("FlashCards.Models.FlashCardGroup", "FlashCardGroup")
+                    b.HasOne("FlashCards.Models.FlashCardSet", "FlashCardSet")
                         .WithMany("FlashCards")
-                        .HasForeignKey("FlashCardGroupCardGroupID");
+                        .HasForeignKey("CardSetID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("FlashCards.Models.FlashCardGroup", b =>
+            modelBuilder.Entity("FlashCards.Models.FlashCardSet", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()

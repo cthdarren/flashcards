@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FlashCards.Data.Migrations
+namespace FlashCards.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200912094342_add-flashcards")]
-    partial class addflashcards
+    [Migration("20200914111529_added-description")]
+    partial class addeddescription
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,43 +23,49 @@ namespace FlashCards.Data.Migrations
 
             modelBuilder.Entity("FlashCards.Models.FlashCard", b =>
                 {
-                    b.Property<int>("FlashCardID")
+                    b.Property<Guid>("FlashCardID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Answer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CardGroupID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CardSetID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("FlashCardGroupCardGroupID")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Question")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FlashCardID");
 
-                    b.HasIndex("FlashCardGroupCardGroupID");
+                    b.HasIndex("CardSetID");
 
                     b.ToTable("FlashCards");
                 });
 
-            modelBuilder.Entity("FlashCards.Models.FlashCardGroup", b =>
+            modelBuilder.Entity("FlashCards.Models.FlashCardSet", b =>
                 {
-                    b.Property<int>("CardGroupID")
+                    b.Property<Guid>("CardGroupID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("CardGroupID");
 
-                    b.ToTable("FlashCardGroups");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FlashCardSets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -264,9 +270,18 @@ namespace FlashCards.Data.Migrations
 
             modelBuilder.Entity("FlashCards.Models.FlashCard", b =>
                 {
-                    b.HasOne("FlashCards.Models.FlashCardGroup", "FlashCardGroup")
+                    b.HasOne("FlashCards.Models.FlashCardSet", "FlashCardSet")
                         .WithMany("FlashCards")
-                        .HasForeignKey("FlashCardGroupCardGroupID");
+                        .HasForeignKey("CardSetID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FlashCards.Models.FlashCardSet", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
