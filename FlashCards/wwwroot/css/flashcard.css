@@ -1,7 +1,25 @@
-.flashCard{
-    margin-bottom: 26px;
+.flashCard {
+  margin-bottom: 26px;
 }
 
-.addbtn{
-    float:right;
+.addbtn {
+  float: right;
+}
+
+.addFcButton {
+  float: right;
+}
+
+.deleteFlashCard {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+}
+
+.flashCardHeader{
+    position: sticky;
+    top:0;
+    background:white;
+    z-index: 6;
+    padding-top:20px;
 }

@@ -15,6 +15,7 @@ interface State {
   addName: string;
   addDescription: string;
   addFlashCards: any[];
+  addFlashCardCount: number;
 }
 
 class FlashCards extends Component<Props, State> {
@@ -28,7 +29,26 @@ class FlashCards extends Component<Props, State> {
     addName: "",
     addDescription: "",
     addFlashCards: [],
+    addFlashCardCount: 1
   };
+
+  AddNewFlashCard = async () => {
+    this.setState({xhr:true, errMsg: ""});
+
+    const queryRequest = "/Home/AddFlashCardSet"
+
+    const content = await axios({
+      method:"post",
+      url: queryRequest,
+      data:{
+          "payload":{
+              "name": this.state.addName,
+              "desc": this.state.addDescription,
+              "flashCards": this.state.addFlashCards
+          }
+      }
+    })
+  }
 
   GetFlashCards = async () => {
     this.setState({ xhr: true, errMsg: "" });
@@ -57,6 +77,10 @@ class FlashCards extends Component<Props, State> {
   };
   changeFlashcardValue = (value) => {
     this.setState({addFlashCards: value})
+
+  };
+  changeFlashcardCount = (value) => {
+    this.setState({addFlashCardCount: value})
 
   };
 
@@ -94,6 +118,8 @@ class FlashCards extends Component<Props, State> {
                   changeName={(value) => this.changeNameValue(value)}
                   changeDesc={(value) => this.changeDescValue(value)}
                   changeFlashcards={(value) => this.changeFlashcardValue(value)}
+                  flashCardCount={this.state.addFlashCardCount}
+                  changeFlashCardCount={(value) => this.changeFlashcardCount(value)}
                 />
               </div>
               <div className="modal-footer">
@@ -104,7 +130,7 @@ class FlashCards extends Component<Props, State> {
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary"  onClick={this.AddNewFlashCard}>
                   Save changes
                 </button>
               </div>

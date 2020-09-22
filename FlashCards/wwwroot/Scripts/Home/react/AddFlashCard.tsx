@@ -1,12 +1,15 @@
 import React from "react";
+import FlashCardInput from "./FlashCardInput";
 
 interface Props {
   name: string;
   description: string;
   flashcards: any[];
+  flashCardCount: number;
   changeName: (value: any) => void;
   changeDesc: (value: any) => void;
-  changeFlashcards: (value: any) => void;
+  changeFlashcards: (value: any[]) => void;
+  changeFlashCardCount: (value: number) => void;
 }
 
 const AddFlashCard = (props: Props) => {
@@ -26,14 +29,27 @@ const AddFlashCard = (props: Props) => {
           <textarea
             className="form-control"
             onChange={(event) => props.changeDesc(event.target.value)}
-          >{props.description}</textarea>
+          >
+            {props.description}
+          </textarea>
         </div>
         <div className="form-group">
-          <label>FlashCards: </label>
-          <input
-            className="form-control"
-            value={props.flashcards}
-            onChange={(event) => props.changeFlashcards(event.target.value)}
+          <div className="flashCardHeader">
+            <label>FlashCards: </label>
+            <button
+              className=" mb-2 addFcButton btn btn-sm btn-secondary"
+              onClick={() =>
+                props.changeFlashCardCount(props.flashCardCount + 1)
+              }
+            >
+              +
+            </button>
+            <hr />
+          </div>
+          <FlashCardInput
+            flashCardCount={props.flashCardCount}
+            flashcards={props.flashcards}
+            changeFlashcards={props.changeFlashcards}
           />
         </div>
       </div>
