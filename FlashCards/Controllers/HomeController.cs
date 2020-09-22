@@ -47,20 +47,29 @@ namespace FlashCards.Controllers
 
         //TODO CHANGE THIS TO ADDING A FLASHCARD TAKES IN A LIST AND OTHER PROPERTIES
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddFlashCardSet([FromBody] FlashCardPayload payload)
         {
             string userId = _usermanager.GetUserId(User);
+            if (payload.name == "" ){
+                return new JsonResult(new { success = false, msg = "FlashCard name cannot be empty!" });
+            }
             
-            FlashCardSet NewFlashCardSet = new FlashCardSet(){
-                CardGroupID = new Guid(),
-                Name = payload.name,
-                FlashCards = payload.flashCards,
-                UserId = userId
-            };
-            _context.Add(NewFlashCardSet);
-
-            try { 
+            foreach (FlashCard fc in payload.flashCards){
+                if(fc.Question == "" || fc.Answer == ""){
+                    return new JsonResult(new { success = false, msg ="All flashCard questions and answers must be filled" });
+                }
+            }
+            try
+            {
+                FlashCardSet NewFlashCardSet = new FlashCardSet()
+                {
+                    CardGroupID = new Guid(),
+                    Name = payload.name,
+                    FlashCards = payload.flashCards,
+                    Description = payload.description,
+                    UserId = userId
+                };
+                _context.Add(NewFlashCardSet);
                 await _context.SaveChangesAsync();
                 return new JsonResult(new { success = true });
             }
@@ -81,8 +90,10 @@ namespace FlashCards.Controllers
         }
 
 
-        public class FlashCardPayload{
+        public class FlashCardPayload
+        {
             public string name;
+            public string description;
             public List<FlashCard> flashCards;
         }
     }

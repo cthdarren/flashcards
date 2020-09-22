@@ -109,6 +109,7 @@ class FlashCards extends Component<Props, State> {
   render() {
     return (
       <div>
+        <button onClick={this.GetFlashCards}>gete flash cards</button>
         <div
           className="modal fade"
           id="exampleModal"

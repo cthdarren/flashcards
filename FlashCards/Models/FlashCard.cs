@@ -11,7 +11,6 @@ namespace FlashCards.Models
     {
         [Key]
         public Guid FlashCardID { get; set; }
-        public string Description { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
         public Guid CardSetID { get; set; }
