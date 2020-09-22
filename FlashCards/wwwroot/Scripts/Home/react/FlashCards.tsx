@@ -29,27 +29,32 @@ class FlashCards extends Component<Props, State> {
     addDescription: "",
     addFlashCards: [
       {
-        "question":"",
-        "answer":""
-      }
+        question: "",
+        answer: "",
+      },
     ],
   };
 
   AddNewFlashCard = async () => {
-    this.setState({xhr:true, errMsg: ""});
+    this.setState({ xhr: true, errMsg: "" });
 
-    const queryRequest = "/Home/AddFlashCardSet"
+    const queryRequest = "/Home/AddFlashCardSet";
 
     const content = await axios({
-      method:"post",
+      method: "post",
       url: queryRequest,
-      data:{
-            "name": this.state.addName,
-            "desc": this.state.addDescription,
-            "flashCards": this.state.addFlashCards
-      }
-    })
-  }
+      data: {
+        name: this.state.addName,
+        desc: this.state.addDescription,
+        flashCards: this.state.addFlashCards,
+      },
+    });
+
+    if (content.data.success === false) {
+      this.setState({ errMsg: content.data.msg });
+    }
+    this.setState({ xhr: false });
+  };
 
   GetFlashCards = async () => {
     this.setState({ xhr: true, errMsg: "" });
@@ -70,39 +75,37 @@ class FlashCards extends Component<Props, State> {
   };
 
   changeNameValue = (value) => {
-      this.setState({addName: value})
+    this.setState({ addName: value });
   };
   changeDescValue = (value) => {
-      this.setState({addDescription: value})
-    
+    this.setState({ addDescription: value });
   };
   changeFlashcardValue = (value) => {
-    this.setState({addFlashCards: value})
-
+    this.setState({ addFlashCards: value });
   };
   addFlashcard = () => {
-    let newList = [...this.state.addFlashCards]
-    newList.push({"question": "", "answer":""})
-    this.setState({addFlashCards: newList})
+    let newList = [...this.state.addFlashCards];
+    newList.push({ question: "", answer: "" });
+    this.setState({ addFlashCards: newList });
   };
 
-  removeFlashCard =(index) => {
-    let newList = [...this.state.addFlashCards]
-    newList.splice(index, 1)
-    this.setState({addFlashCards: newList})
-  }
+  removeFlashCard = (index) => {
+    let newList = [...this.state.addFlashCards];
+    newList.splice(index, 1);
+    this.setState({ addFlashCards: newList });
+  };
 
   changeFlashCardQn = (index, value) => {
-    let newList = [...this.state.addFlashCards]
+    let newList = [...this.state.addFlashCards];
     newList[index].question = value;
-    this.setState({addFlashCards: newList})
-  }
+    this.setState({ addFlashCards: newList });
+  };
 
   changeFlashCardAns = (index, value) => {
-    let newList = [...this.state.addFlashCards]
+    let newList = [...this.state.addFlashCards];
     newList[index].answer = value;
-    this.setState({addFlashCards: newList})
-  }
+    this.setState({ addFlashCards: newList });
+  };
 
   render() {
     return (
@@ -133,13 +136,18 @@ class FlashCards extends Component<Props, State> {
               </div>
               <div className="modal-body">
                 <AddFlashCard
+                  errMsg={this.state.errMsg}
                   name={this.state.addName}
                   description={this.state.addDescription}
                   flashcards={this.state.addFlashCards}
                   changeName={(value) => this.changeNameValue(value)}
                   changeDesc={(value) => this.changeDescValue(value)}
-                  changeQuestion={(index, value) => this.changeFlashCardQn(index,value)}
-                  changeAnswer={(index, value) => this.changeFlashCardAns(index,value)}
+                  changeQuestion={(index, value) =>
+                    this.changeFlashCardQn(index, value)
+                  }
+                  changeAnswer={(index, value) =>
+                    this.changeFlashCardAns(index, value)
+                  }
                   addFlashCard={() => this.addFlashcard()}
                   removeFlashCard={(index) => this.removeFlashCard(index)}
                 />
@@ -152,7 +160,11 @@ class FlashCards extends Component<Props, State> {
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary" onClick={this.AddNewFlashCard}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={this.AddNewFlashCard}
+                >
                   Save changes
                 </button>
               </div>

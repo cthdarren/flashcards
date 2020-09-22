@@ -61,7 +61,7 @@ namespace FlashCards.Controllers
             {
                 if (fc.Question == "" || fc.Answer == "")
                 {
-                    return new JsonResult(new { success = false, msg = "All flashCard questions and answers must be filled" });
+                    return new JsonResult(new { success = false, msg = "All flash card questions and answers must be filled!" });
                 }
             }
             try

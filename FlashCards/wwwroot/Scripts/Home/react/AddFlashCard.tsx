@@ -2,6 +2,7 @@ import React from "react";
 import FlashCardInput from "./FlashCardInput";
 
 interface Props {
+  errMsg: string;
   name: string;
   description: string;
   flashcards: any[];
@@ -16,6 +17,9 @@ interface Props {
 const AddFlashCard = (props: Props) => {
   return (
     <div>
+      <div className="text-danger">
+        {props.errMsg == ""? (<React.Fragment/>) : (props.errMsg)}
+      </div>
       <div className="text-left">
         <div className="form-group">
           <label>Name: </label>
