@@ -2,20 +2,21 @@ import React from "react";
 
 interface Props {
   flashcards: any[];
-  flashCardCount: number;
-  changeFlashcards: (value) => void;
+  removeFlashCard: (index: number) => void;
+  changeQuestion: (index: number, value: string) => void;
+  changeAnswer: (index: number, value: string) => void;
 }
 
 const FlashCardInput = (props: Props) => {
   let flashCardArr = [];
-  for (let index = 0; index < props.flashCardCount; index++) {
+  for (let index = 0; index < props.flashcards.length; index++) {
     flashCardArr.push(
       <div>
         {index > 0? (<hr/>): (<React.Fragment/>)}
 
         <div className="row">
           <div className="deleteFlashCard col-1 p-0">
-            <button className="btn btn-sm btn-danger">-</button>
+            <button className="btn btn-sm btn-danger" onClick={() => props.removeFlashCard(index)}>-</button>
           </div>
           <div className="col">
             <div className="row">
@@ -27,9 +28,9 @@ const FlashCardInput = (props: Props) => {
               <div className="col">
                 <input
                   className="ml-2 form-control d-inline-block"
-                  value={props.flashcards}
+                  value={props.flashcards[index].question}
                   onChange={(event) =>
-                    props.changeFlashcards(event.target.value)
+                    props.changeQuestion(index, event.target.value)
                   }
                 />
               </div>
@@ -45,9 +46,9 @@ const FlashCardInput = (props: Props) => {
               <div className="col">
                 <input
                   className="ml-2 d-inline-block form-control"
-                  value={props.flashcards}
+                  value={props.flashcards[index].answer}
                   onChange={(event) =>
-                    props.changeFlashcards(event.target.value)
+                    props.changeAnswer(index, event.target.value)
                   }
                 />
               </div>

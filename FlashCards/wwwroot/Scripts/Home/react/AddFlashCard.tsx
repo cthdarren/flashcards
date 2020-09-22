@@ -5,11 +5,12 @@ interface Props {
   name: string;
   description: string;
   flashcards: any[];
-  flashCardCount: number;
   changeName: (value: any) => void;
   changeDesc: (value: any) => void;
-  changeFlashcards: (value: any[]) => void;
-  changeFlashCardCount: (value: number) => void;
+  removeFlashCard: (index: number) => void;
+  changeQuestion: (index: number, value: string) => void;
+  changeAnswer: (index: number, value: string) => void;
+  addFlashCard: () => void;
 }
 
 const AddFlashCard = (props: Props) => {
@@ -39,7 +40,7 @@ const AddFlashCard = (props: Props) => {
             <button
               className=" mb-2 addFcButton btn btn-sm btn-secondary"
               onClick={() =>
-                props.changeFlashCardCount(props.flashCardCount + 1)
+                props.addFlashCard()
               }
             >
               +
@@ -47,9 +48,10 @@ const AddFlashCard = (props: Props) => {
             <hr />
           </div>
           <FlashCardInput
-            flashCardCount={props.flashCardCount}
             flashcards={props.flashcards}
-            changeFlashcards={props.changeFlashcards}
+            removeFlashCard={props.removeFlashCard}
+            changeAnswer={props.changeAnswer}
+            changeQuestion={props.changeQuestion}
           />
         </div>
       </div>

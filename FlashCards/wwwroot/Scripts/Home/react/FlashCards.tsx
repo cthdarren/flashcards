@@ -15,7 +15,6 @@ interface State {
   addName: string;
   addDescription: string;
   addFlashCards: any[];
-  addFlashCardCount: number;
 }
 
 class FlashCards extends Component<Props, State> {
@@ -28,8 +27,12 @@ class FlashCards extends Component<Props, State> {
     adding: false,
     addName: "",
     addDescription: "",
-    addFlashCards: [],
-    addFlashCardCount: 1
+    addFlashCards: [
+      {
+        "question":"",
+        "answer":""
+      }
+    ],
   };
 
   AddNewFlashCard = async () => {
@@ -79,10 +82,29 @@ class FlashCards extends Component<Props, State> {
     this.setState({addFlashCards: value})
 
   };
-  changeFlashcardCount = (value) => {
-    this.setState({addFlashCardCount: value})
-
+  addFlashcard = () => {
+    let newList = [...this.state.addFlashCards]
+    newList.push({"question": "", "answer":""})
+    this.setState({addFlashCards: newList})
   };
+
+  removeFlashCard =(index) => {
+    let newList = [...this.state.addFlashCards]
+    newList.splice(index, 1)
+    this.setState({addFlashCards: newList})
+  }
+
+  changeFlashCardQn = (index, value) => {
+    let newList = [...this.state.addFlashCards]
+    newList[index].question = value;
+    this.setState({addFlashCards: newList})
+  }
+
+  changeFlashCardAns = (index, value) => {
+    let newList = [...this.state.addFlashCards]
+    newList[index].answer = value;
+    this.setState({addFlashCards: newList})
+  }
 
   render() {
     return (
@@ -117,9 +139,10 @@ class FlashCards extends Component<Props, State> {
                   flashcards={this.state.addFlashCards}
                   changeName={(value) => this.changeNameValue(value)}
                   changeDesc={(value) => this.changeDescValue(value)}
-                  changeFlashcards={(value) => this.changeFlashcardValue(value)}
-                  flashCardCount={this.state.addFlashCardCount}
-                  changeFlashCardCount={(value) => this.changeFlashcardCount(value)}
+                  changeQuestion={(index, value) => this.changeFlashCardQn(index,value)}
+                  changeAnswer={(index, value) => this.changeFlashCardAns(index,value)}
+                  addFlashCard={() => this.addFlashcard()}
+                  removeFlashCard={(index) => this.removeFlashCard(index)}
                 />
               </div>
               <div className="modal-footer">
@@ -130,7 +153,7 @@ class FlashCards extends Component<Props, State> {
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary"  onClick={this.AddNewFlashCard}>
+                <button type="button" className="btn btn-primary" onClick={this.AddNewFlashCard}>
                   Save changes
                 </button>
               </div>
