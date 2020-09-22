@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using FlashCards.Models;
 using FlashCards.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace FlashCards.Controllers
 {
@@ -50,13 +52,16 @@ namespace FlashCards.Controllers
         public async Task<IActionResult> AddFlashCardSet([FromBody] FlashCardPayload payload)
         {
             string userId = _usermanager.GetUserId(User);
-            if (payload.name == "" ){
+            if (payload.name == "")
+            {
                 return new JsonResult(new { success = false, msg = "FlashCard name cannot be empty!" });
             }
-            
-            foreach (FlashCard fc in payload.flashCards){
-                if(fc.Question == "" || fc.Answer == ""){
-                    return new JsonResult(new { success = false, msg ="All flashCard questions and answers must be filled" });
+
+            foreach (FlashCard fc in payload.flashCards)
+            {
+                if (fc.Question == "" || fc.Answer == "")
+                {
+                    return new JsonResult(new { success = false, msg = "All flashCard questions and answers must be filled" });
                 }
             }
             try
@@ -84,7 +89,7 @@ namespace FlashCards.Controllers
         {
             string userId = _usermanager.GetUserId(User);
 
-            List<FlashCardSet> cardSetList = _context.FlashCardSets.Where(f => f.UserId == userId).ToList();
+            var cardSetList = _context.FlashCardSets.Where(f => f.UserId == userId).Select(cs => new { cs.CardGroupID, cs.Name, cs.Description }).ToList();
 
             return new JsonResult(new { success = true, payload = cardSetList });
         }
@@ -92,9 +97,9 @@ namespace FlashCards.Controllers
 
         public class FlashCardPayload
         {
-            public string name;
-            public string description;
-            public List<FlashCard> flashCards;
+            public string name { get; set; }
+            public string description { get; set; }
+            public List<FlashCard> flashCards { get; set; }
         }
     }
 }

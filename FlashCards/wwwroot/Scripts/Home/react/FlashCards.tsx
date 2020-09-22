@@ -44,11 +44,9 @@ class FlashCards extends Component<Props, State> {
       method:"post",
       url: queryRequest,
       data:{
-          "payload":{
-              "name": this.state.addName,
-              "desc": this.state.addDescription,
-              "flashCards": this.state.addFlashCards
-          }
+            "name": this.state.addName,
+            "desc": this.state.addDescription,
+            "flashCards": this.state.addFlashCards
       }
     })
   }

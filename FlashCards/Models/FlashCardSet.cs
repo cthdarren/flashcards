@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace FlashCards.Models
 {
@@ -15,10 +16,12 @@ namespace FlashCards.Models
         public string Name { get; set; }
         public string Description {get;set;}
         public ICollection<FlashCard> FlashCards { get; set; }
+        [JsonIgnore]
         public string UserId {get;set;}
         
 
         [ForeignKey("UserId")]
+        [JsonIgnore]
         public IdentityUser User {get;set;}
     }
 }
